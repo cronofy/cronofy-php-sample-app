@@ -1,9 +1,10 @@
 <?php
-include("lib/cronofy.php");
+include("globals.php");
 ?>
 
 <html>
 <head>
+  <link href="assets/css/sample-app.css" rel="stylesheet" type="text/css"></link>
   <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
 </head>
 
@@ -15,3 +16,7 @@ include("lib/cronofy.php");
       </div>
     </div>
   </div>
+
+  <div class="container">
+    <div class="row">
+      <h1>Sample Application</h1>

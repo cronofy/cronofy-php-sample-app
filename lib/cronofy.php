@@ -140,7 +140,7 @@ class Cronofy
 
         $scope_list = join(" ", $params['scope']);
 
-        $url = "https://app.cronofy.com/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list;
+        $url = "http://local.cronofy.com/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list;
         if (!empty($params['state'])) {
             $url.="&state=" . $params['state'];
         }
