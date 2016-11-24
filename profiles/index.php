@@ -28,7 +28,7 @@ foreach($profiles as $profileId => $profile){ ?>
     </div>
 
     <div class="col-xs-4 text-right">
-      <a href="calendars/new.php?profileId=<?= $profile_id ?>" class="btn btn-primary">
+      <a href="/calendars/new.php?profileId=<?= $profile_id ?>" class="btn btn-primary">
         New Calendar
       </a>
     </div>
@@ -49,7 +49,7 @@ foreach($profiles as $profileId => $profile){ ?>
             <?= $profile["calendars"][$j]["calendar_name"] ?>
           </td>
           <td>
-            <a href="calendars/show.php?calendarId=<?= $profile["calendars"][$j]["calendar_id"] ?>">
+            <a href="/calendars/show.php?calendarId=<?= $profile["calendars"][$j]["calendar_id"] ?>">
               View
             </a>
           </td>
