@@ -5,7 +5,7 @@
   Login
 </a>
 <? } else { ?>
-  <a href="/profiles.php">Account Profiles</a>
+  <a href="/profiles">Account Profiles</a>
   <br />
   Channels
   <br />

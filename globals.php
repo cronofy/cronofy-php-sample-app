@@ -7,7 +7,7 @@ session_start();
 $globals['CRONOFY_CLIENT_ID'] = "yptzUGc5Yq_oEWr-li2VZVjg9QE8EE2e";
 $globals['CRONOFY_CLIENT_SECRET'] = "0YqKTZjhnezSkRqL37J-n6JElt-TEPYdsM7u5MFlLaYJqqCbsOOOM1IczNu5DtnEbkRiOEAu20TtZWEKL8OHbA";
 
-$globals['DOMAIN'] = "http://50aeec6f.ngrok.io";
+$globals['DOMAIN'] = "http://localhost:8888";
 
 $accessToken = '';
 if(isset($_SESSION['access_token'])){
