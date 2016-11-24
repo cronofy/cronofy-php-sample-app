@@ -1,7 +1,3 @@
-<?php
-include("globals.php");
-?>
-
 <html>
 <head>
   <link href="/assets/css/sample-app.css" rel="stylesheet" type="text/css"></link>

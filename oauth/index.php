@@ -1,8 +1,9 @@
 <?php
+$GLOBALS['SKIP_AUTH'] = true;
 
 require '../globals.php';
 
-$redirect_uri = $globals['DOMAIN'] . '/oauth/';
+$redirect_uri = $GLOBALS['DOMAIN'] . '/oauth/';
 
 if (!isset($_GET['code'])) {
   $authorizationUrl = $cronofy->getAuthorizationUrl(array(
@@ -19,8 +20,8 @@ if (!isset($_GET['code'])) {
     $_SESSION['access_token'] = $cronofy->access_token;
     $_SESSION['refresh_token'] = $cronofy->refresh_token;
 
-    header('Location: ' . $globals['DOMAIN']);
+    header('Location: ' . $GLOBALS['DOMAIN']);
   } finally {
-    header('Location: ' . $globals['DOMAIN']);
+    header('Location: ' . $GLOBALS['DOMAIN']);
   }
 }

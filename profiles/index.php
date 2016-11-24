@@ -1,8 +1,5 @@
-<?php include("../header.php"); ?>
-
-<h2>Calendars</h2>
-
-<?
+<?php
+include("../globals.php");
 
 $calendars = $cronofy->list_calendars()["calendars"];
 
@@ -21,7 +18,11 @@ for($i = 0; $i < count($calendars); $i++){
   array_push($profiles[$profileId]["calendars"], $calendars[$i]);
 }
 
-foreach($profiles as $profileId => $profile){ ?>
+include("../header.php"); ?>
+
+<h2>Calendars</h2>
+
+<? foreach($profiles as $profileId => $profile){ ?>
   <div class="row">
     <div class="col-xs-8">
       <h3><?= $profile["profile_name"] ?></h3>

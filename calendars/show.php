@@ -1,7 +1,9 @@
-<?php include("../header.php");
+<?php
+include("../globals.php");
 
 if(!isset($_GET['calendarId'])){
   header('Location: ' . $globals['DOMAIN'] . '/profiles');
+  die;
 }
 
 $calendars = $cronofy->list_calendars()["calendars"];
@@ -14,10 +16,12 @@ for($i = 0; $i < count($calendars); $i++){
 
 if(!isset($calendar)){
   header('Location: ' . $globals['DOMAIN'] . '/profiles');
+  die;
 }
 
 $events = $cronofy->read_events(array("tzid" => "Etc/UTC", "include_managed" => true, "calendar_ids" => array($calendar["calendar_id"])));
-?>
+
+include("../header.php"); ?>
 
 <h2><?= $calendar["calendar_name"] ?> - Events</h2>
 

@@ -1,4 +1,9 @@
-<?php include("header.php"); ?>
+<?php
+$GLOBALS['SKIP_AUTH'] = true;
+
+include("globals.php");
+include("header.php");
+?>
 
 <? if($cronofy->access_token == "") { ?>
 <a class="btn btn-primary btn-success" href="/oauth/">
