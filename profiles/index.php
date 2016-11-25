@@ -29,7 +29,7 @@ include("../header.php"); ?>
     </div>
 
     <div class="col-xs-4 text-right">
-      <a href="/calendars/new.php?profileId=<?= $profile_id ?>" class="btn btn-primary">
+      <a href="/calendars/new.php?profileId=<?= $profileId ?>" class="btn btn-primary">
         New Calendar
       </a>
     </div>
