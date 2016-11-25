@@ -44,15 +44,18 @@ include("../header.php"); ?>
   <div class="col-xs-8">
     <h2><?= $calendar["calendar_name"] ?> - <?= $event["summary"] ?></h2>
   </div>
-  <div class="col-xs-4 text-right">
-    <a href="/events/edit.php?calendarId=<?= $calendar["calendar_id"] ?>&eventUid=<?= $event["event_uid"] ?>" class="btn btn-primary">
-      Edit
-    </a>
-    <form action="/events/delete.php" method="post" class="button_to">
-      <input type="hidden" name="event[event_uid]" value="<?= $event["event_uid"] ?>" />
-      <input type="submit" value="Delete" class="btn btn-danger" />
-    </form>
-  </div>
+  <? if(isset($event["event_id"])){ ?>
+    <div class="col-xs-4 text-right">
+      <a href="/events/edit.php?calendarId=<?= $calendar["calendar_id"] ?>&eventUid=<?= $event["event_uid"] ?>" class="btn btn-primary">
+        Edit
+      </a>
+      <form action="/events/delete.php" method="post" class="button_to">
+        <input type="hidden" name="event[event_id]" value="<?= $event["event_id"] ?>" />
+        <input type="hidden" name="event[calendar_id]" value="<?= $event["calendar_id"] ?>" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+      </form>
+    </div>
+    <? } ?>
 </div>
 
 <dl class="dl-horizontal">
