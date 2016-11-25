@@ -48,7 +48,7 @@ include("../header.php"); ?>
         <?= $event["end"] ?>
       </td>
       <td>
-        <a href="/events/show.php?event_uid=<?= $event["event_uid"] ?>">
+        <a href="/events/show.php?calendarId=<?= $calendar["calendar_id"] ?>&eventUid=<?= $event["event_uid"] ?>">
           View
         </a>
       </td>
