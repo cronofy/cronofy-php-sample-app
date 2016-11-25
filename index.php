@@ -12,7 +12,7 @@ include("header.php");
 <? } else { ?>
   <a href="/profiles">Account Profiles</a>
   <br />
-  Channels
+  <a href="/channels">Channels</a>
   <br />
   Free busy
   <br />
