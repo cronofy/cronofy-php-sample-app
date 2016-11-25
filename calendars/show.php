@@ -23,7 +23,15 @@ $events = $cronofy->read_events(array("tzid" => "Etc/UTC", "include_managed" => 
 
 include("../header.php"); ?>
 
+<div class="row">
+  <div class="col-xs-8">
 <h2><?= $calendar["calendar_name"] ?> - Events</h2>
+</div>
+<div class="col-xs-4 text-right">
+  <a href="/events/new.php?calendarId=<?= $calendar["calendar_id"] ?>" class="btn btn-primary">
+    Create Event
+  </a>
+</div>
 
 <table class="table table-striped table-hover">
   <thead>
