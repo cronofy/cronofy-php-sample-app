@@ -16,7 +16,7 @@ include("header.php");
   <br />
   <a href="/free_busy/">Free busy</a>
   <br />
-  Enterprise Connect
+  <a href="/enterprise_connect/">Enterprise Connect</a>
 <? } ?>
 
 <?php include("footer.php"); ?>
