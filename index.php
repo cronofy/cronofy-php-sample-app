@@ -10,9 +10,9 @@ include("header.php");
   Login
 </a>
 <? } else { ?>
-  <a href="/profiles">Account Profiles</a>
+  <a href="/profiles/">Account Profiles</a>
   <br />
-  <a href="/channels">Channels</a>
+  <a href="/channels/">Channels</a>
   <br />
   Free busy
   <br />
