@@ -5,7 +5,7 @@ function GoBack(){
   if(isset($_GET['calendarId'])){
     header('Location: ' . $GLOBALS['DOMAIN'] . '/calendars/show.php?calendarId=' . $_GET['calendarId']);
   } else {
-    header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles');
+    header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles/');
   }
   die;
 }

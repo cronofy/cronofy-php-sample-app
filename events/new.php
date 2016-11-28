@@ -2,7 +2,7 @@
 include("../globals.php");
 
 if(!isset($_GET['calendarId'])){
-  header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles');
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles/');
   die;
 }
 
@@ -15,7 +15,7 @@ for($i = 0; $i < count($calendars); $i++){
 }
 
 if(!isset($calendar)){
-  header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles');
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles/');
   die;
 }
 

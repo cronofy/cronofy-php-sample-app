@@ -2,7 +2,7 @@
 include("../globals.php");
 
 if(!isset($_GET['channelId'])){
-  header('Location: ' . $globals['DOMAIN'] . '/channels');
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/channels/');
   die;
 }
 
@@ -15,7 +15,7 @@ for($i = 0; $i < count($channels); $i++){
 }
 
 if(!isset($channel)){
-  header('Location: ' . $globals['DOMAIN'] . '/channels');
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/channels/');
   die;
 }
 

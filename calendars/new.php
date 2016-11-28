@@ -2,7 +2,7 @@
 include("../globals.php");
 
 if(!isset($_GET['profileId'])){
-  header('Location: ' . $globals['DOMAIN'] . '/profiles');
+  header('Location: ' . $globals['DOMAIN'] . '/profiles/');
   die;
 }
 
@@ -15,7 +15,7 @@ for($i = 0; $i < count($profiles); $i++){
 }
 
 if(!isset($profile)){
-  header('Location: ' . $globals['DOMAIN'] . '/profiles');
+  header('Location: ' . $globals['DOMAIN'] . '/profiles/');
   die;
 }
 

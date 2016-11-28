@@ -9,7 +9,7 @@ $cronofy->create_channel(Array(
     "calendar_ids" => $_POST['channel']['calendar_ids']
   )));
 
-header('Location: ' . $GLOBALS['DOMAIN'] . '/channels');
+header('Location: ' . $GLOBALS['DOMAIN'] . '/channels/');
 exit;
 
 ?>
