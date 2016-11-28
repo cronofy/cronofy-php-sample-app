@@ -1,7 +1,5 @@
 <?php
 
-include "status-codes.php";
-
 class CronofyException extends Exception
 {
     private $error_details;
@@ -21,7 +19,7 @@ class CronofyException extends Exception
 
 class Cronofy
 {
-    const USERAGENT = 'Cronofy PHP 0.4';
+    const USERAGENT = 'Cronofy PHP 0.6';
     const API_ROOT_URL = 'http://local.cronofy.com';
     const API_VERSION = 'v1';
 
@@ -74,7 +72,7 @@ class Cronofy
         return $this->handle_response($result, $status_code);
     }
 
-    public function http_post($path, array $params = array())
+    private function http_post($path, array $params = array())
     {
         $url = $this->api_url($path);
 
@@ -141,6 +139,33 @@ class Cronofy
         $scope_list = join(" ", $params['scope']);
 
         $url = "http://local.cronofy.com/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list;
+        if (!empty($params['state'])) {
+            $url.="&state=" . $params['state'];
+        }
+        if (!empty($params['avoid_linking'])) {
+            $url.="&avoid_linking=" . $params['avoid_linking'];
+        }
+        return $url;
+    }
+
+    public function getEnterpriseConnectAuthorizationUrl($params)
+    {
+        /*
+          Array $params : An array of additional parameters
+          redirect_uri : String. The HTTP or HTTPS URI you wish the user's authorization request decision to be redirected to. REQUIRED
+          scope : Array. An array of scopes to be granted by the access token. Possible scopes detailed in the Cronofy API documentation. REQUIRED
+          delegated_scope : Array. An array of scopes to be granted that will be allowed to be granted to the account's users. REQUIRED
+          state : String. A value that will be returned to you unaltered along with the user's authorization request decsion. OPTIONAL
+          avoid_linking : Boolean when true means we will avoid linking calendar accounts together under one set of credentials. OPTIONAL
+
+          Response :
+          $url : String. The URL to authorize your enterprise connect access to the Cronofy API
+         */
+
+        $scope_list = join(" ", $params['scope']);
+        $delegated_scope_list = join(" ", $params['delegated_scope']);
+
+        $url = "http://local.cronofy.com/enterprise_connect/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list . "&delegated_scope=" . $delegated_scope_list;
         if (!empty($params['state'])) {
             $url.="&state=" . $params['state'];
         }
@@ -405,6 +430,15 @@ class Cronofy
         return $this->http_post("/" . self::API_VERSION . "/calendars", $params);
     }
 
+    public function resources()
+    {
+        /*
+          returns $result - Array of resources. Details are available in the Cronofy API Documentation
+         */
+        return $this->http_get('/' . self::API_VERSION . "/resources");
+    }
+
+
     private function api_url($path)
     {
         return self::API_ROOT_URL . $path;
@@ -461,8 +495,66 @@ class Cronofy
             return $this->parsed_response($result);
         }
 
-        throw new CronofyException($GLOBALS['http_codes'][$status_code], $status_code, $this->parsed_response($result));
+        throw new CronofyException($this->http_codes[$status_code], $status_code, $this->parsed_response($result));
     }
+
+    private $http_codes = array(
+      100 => 'Continue',
+      101 => 'Switching Protocols',
+      102 => 'Processing',
+      200 => 'OK',
+      201 => 'Created',
+      202 => 'Accepted',
+      203 => 'Non-Authoritative Information',
+      204 => 'No Content',
+      205 => 'Reset Content',
+      206 => 'Partial Content',
+      207 => 'Multi-Status',
+      300 => 'Multiple Choices',
+      301 => 'Moved Permanently',
+      302 => 'Found',
+      303 => 'See Other',
+      304 => 'Not Modified',
+      305 => 'Use Proxy',
+      306 => 'Switch Proxy',
+      307 => 'Temporary Redirect',
+      400 => 'Bad Request',
+      401 => 'Unauthorized',
+      402 => 'Payment Required',
+      403 => 'Forbidden',
+      404 => 'Not Found',
+      405 => 'Method Not Allowed',
+      406 => 'Not Acceptable',
+      407 => 'Proxy Authentication Required',
+      408 => 'Request Timeout',
+      409 => 'Conflict',
+      410 => 'Gone',
+      411 => 'Length Required',
+      412 => 'Precondition Failed',
+      413 => 'Request Entity Too Large',
+      414 => 'Request-URI Too Long',
+      415 => 'Unsupported Media Type',
+      416 => 'Requested Range Not Satisfiable',
+      417 => 'Expectation Failed',
+      418 => 'I\'m a teapot',
+      422 => 'Unprocessable Entity',
+      423 => 'Locked',
+      424 => 'Failed Dependency',
+      425 => 'Unordered Collection',
+      426 => 'Upgrade Required',
+      449 => 'Retry With',
+      450 => 'Blocked by Windows Parental Controls',
+      500 => 'Internal Server Error',
+      501 => 'Not Implemented',
+      502 => 'Bad Gateway',
+      503 => 'Service Unavailable',
+      504 => 'Gateway Timeout',
+      505 => 'HTTP Version Not Supported',
+      506 => 'Variant Also Negotiates',
+      507 => 'Insufficient Storage',
+      509 => 'Bandwidth Limit Exceeded',
+      510 => 'Not Extended'
+    );
 }
 
 class PagedResultIterator
