@@ -14,7 +14,7 @@ include("header.php");
   <br />
   <a href="/channels/">Channels</a>
   <br />
-  Free busy
+  <a href="/free_busy/">Free busy</a>
   <br />
   Enterprise Connect
 <? } ?>
