@@ -11,12 +11,17 @@ $GLOBALS['DOMAIN'] = "http://0b6ed710.ngrok.io";
 
 $accessToken = '';
 $refreshToken = '';
-if(isset($_SESSION['refresh_token'])){
-  $accessToken = $_SESSION['access_token'];
-  $refreshToken = $_SESSION['refresh_token'];
+
+$accessTokenKey = isset($GLOBALS['ACCESS_TOKEN_KEY']) ? $GLOBALS['ACCESS_TOKEN_KEY'] : "access_token";
+$refreshTokenKey = isset($GLOBALS['REFRESH_TOKEN_KEY']) ? $GLOBALS['REFRESH_TOKEN_KEY'] : "refresh_token";
+$loginPath = isset($GLOBALS['LOGIN_PATH']) ? $GLOBALS['LOGIN_PATH'] : "/";
+
+if(isset($_SESSION[$refreshTokenKey])){
+  $accessToken = $_SESSION[$accessTokenKey];
+  $refreshToken = $_SESSION[$refreshTokenKey];
 } else {
   if(!isset($GLOBALS['SKIP_AUTH'])){
-    header('Location: ' . $GLOBALS['DOMAIN']);
+    header('Location: ' . $GLOBALS['DOMAIN'] . $loginPath);
   }
 }
 
@@ -25,16 +30,16 @@ $cronofy = new Cronofy($GLOBALS['CRONOFY_CLIENT_ID'], $GLOBALS['CRONOFY_CLIENT_S
 set_exception_handler(function($e){
   if(is_a($e, "CronofyException") && $e->getMessage() == "Unauthorized"){
     if($GLOBALS['cronofy']->refresh_token()){
-      $_SESSION['access_token'] = $GLOBALS['cronofy']->access_token;
-      $_SESSION['refresh_token'] = $GLOBALS['cronofy']->refresh_token;
+      $_SESSION[$GLOBALS['accessTokenKey']] = $GLOBALS['cronofy']->access_token;
+      $_SESSION[$GLOBALS['refreshTokenKey']] = $GLOBALS['cronofy']->refresh_token;
 
       header('Refresh:0');
       die;
     } else {
-      unset($_SESSION['access_token']);
-      unset($_SESSION['refresh_token']);
+      unset($_SESSION[$GLOBALS['accessTokenKey']]);
+      unset($_SESSION[$GLOBALS['refreshTokenKey']]);
 
-      header('Location: ' . $GLOBALS['DOMAIN']);
+      header('Location: ' . $GLOBALS['DOMAIN'] . $loginPath);
       die;
     }
   } else {
