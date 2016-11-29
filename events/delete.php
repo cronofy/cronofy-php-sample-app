@@ -1,6 +1,6 @@
 <?php
 
-include("../globals.php");
+include("../config.php");
 
 $cronofy->delete_event(Array("calendar_id" => $_POST['event']['calendar_id'], "event_id" => $_POST['event']['event_id']));
 

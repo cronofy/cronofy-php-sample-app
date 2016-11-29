@@ -1,7 +1,7 @@
 <?php
 $GLOBALS['SKIP_AUTH'] = true;
 
-include("globals.php");
+include("config.php");
 include("header.php");
 ?>
 

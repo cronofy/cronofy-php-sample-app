@@ -1,5 +1,5 @@
 <?php
-include("../globals.php");
+include("../config.php");
 
 $channels = $cronofy->list_channels()["channels"];
 

@@ -1,5 +1,5 @@
 <?php
-include("../globals.php");
+include("../config.php");
 
 $calendars = $cronofy->list_calendars()["calendars"];
 

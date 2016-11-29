@@ -1,5 +1,5 @@
 <?php
-include("../globals.php");
+include("../config.php");
 
 if(!isset($_GET['channelId'])){
   header('Location: ' . $GLOBALS['DOMAIN'] . '/channels/');

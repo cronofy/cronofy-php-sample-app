@@ -1,5 +1,5 @@
 <?php
-include("../globals.php");
+include("../config.php");
 
 function GoBack(){
   if(isset($_GET['calendarId'])){

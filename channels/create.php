@@ -1,6 +1,6 @@
 <?php
 
-include("../globals.php");
+include("../config.php");
 
 $cronofy->create_channel(Array(
   "callback_url" => $GLOBALS['DOMAIN'] . '/push/?path=' . $_POST['channel']['path'],

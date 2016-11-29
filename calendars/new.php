@@ -1,5 +1,5 @@
 <?php
-include("../globals.php");
+include("../config.php");
 
 if(!isset($_GET['profileId'])){
   header('Location: ' . $globals['DOMAIN'] . '/profiles/');

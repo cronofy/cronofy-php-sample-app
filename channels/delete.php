@@ -1,6 +1,6 @@
 <?php
 
-include("../globals.php");
+include("../config.php");
 
 $cronofy->close_channel(Array("channel_id" => $_GET['channelId']));
 

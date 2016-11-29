@@ -1,6 +1,6 @@
 <?php
 
-include("../globals.php");
+include("../config.php");
 
 $cronofy->upsert_event(Array(
   "tzid" => "Etc/UTC",

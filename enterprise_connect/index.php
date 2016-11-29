@@ -1,5 +1,5 @@
 <?php
-include("./globals.php");
+include("./config.php");
 
 include("../header.php");
 
@@ -48,4 +48,7 @@ if($cronofy->access_token != ""){
       <? } ?>
     </tbody>
   </table>
-  <? } ?>
+  <? }
+
+include("../footer.php");
+?>

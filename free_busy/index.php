@@ -1,5 +1,5 @@
 <?php
-include("../globals.php");
+include("../config.php");
 
 $freeBusyInfo = $cronofy->free_busy(Array("tzid" => "Etc/UTC"));
 $calendarList = $cronofy->list_calendars()["calendars"];
