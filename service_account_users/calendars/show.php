@@ -28,7 +28,7 @@ include("../../header.php"); ?>
 <h2><?= $calendar["calendar_name"] ?> - Events</h2>
 </div>
 <div class="col-xs-4 text-right">
-  <a href="/events/new.php?calendarId=<?= $calendar["calendar_id"] ?>" class="btn btn-primary">
+  <a href="/service_account_users/events/new.php?email=<?= $_GET['email'] ?>&calendarId=<?= $calendar["calendar_id"] ?>" class="btn btn-primary">
     Create Event
   </a>
 </div>
