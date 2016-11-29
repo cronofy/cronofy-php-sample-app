@@ -83,9 +83,11 @@ include("../header.php");
           <td><?= $users[$i]["email"] ?></td>
           <td><?= $users[$i]["status"] ?></td>
           <td>
-            <a href="/service_account_users/?email=<?= $users["email"] ?>">
-              View
-            </a>
+            <? if($users[$i]["status"] == "Linked"){ ?>
+              <a href="/service_account_users/?email=<?= $users[$i]["email"] ?>">
+                View
+              </a>
+            <? } ?>
           </td>
         </tr>
       <? } ?>
