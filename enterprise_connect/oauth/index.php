@@ -1,7 +1,7 @@
 <?php
 $GLOBALS['SKIP_AUTH'] = true;
 
-require '../../globals.php';
+require '../../config.php';
 
 $redirect_uri = $GLOBALS['DOMAIN'] . '/enterprise_connect/oauth/';
 
@@ -20,6 +20,12 @@ if (!isset($_GET['code'])) {
 
     $_SESSION['service_account_access_token'] = $cronofy->access_token;
     $_SESSION['service_account_refresh_token'] = $cronofy->refresh_token;
+
+    $fileName = __DIR__ . "/../push/credentials.json";
+
+    $file = fopen($fileName, "w");
+    fwrite($file, json_encode(Array("access_token" => $cronofy->access_token, "refresh_token" => $cronofy->refresh_token)));
+    fclose($file);
 
     header('Location: ' . $GLOBALS['DOMAIN'] . '/enterprise_connect/');
   } finally {

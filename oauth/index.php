@@ -19,8 +19,6 @@ if (!isset($_GET['code'])) {
 
     $_SESSION['access_token'] = $cronofy->access_token;
     $_SESSION['refresh_token'] = $cronofy->refresh_token;
-
-    header('Location: ' . $GLOBALS['DOMAIN']);
   } finally {
     header('Location: ' . $GLOBALS['DOMAIN']);
   }

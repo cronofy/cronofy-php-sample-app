@@ -1,11 +1,28 @@
 <?php
 include("./config.php");
 
-include("../header.php");
-
 if($cronofy->access_token != ""){
   $resources = $cronofy->resources()["resources"];
+
+  $users = Array();
+
+  $usersFolder = __DIR__ . "/users/";
+  if(file_exists($usersFolder)){
+    $userFiles = scandir($usersFolder);
+
+    for($i = 0; $i < count($userFiles); $i++){
+      if($userFiles[$i] == "." || $userFiles[$i] == "..")
+        continue;
+
+      $userFile = fopen($usersFolder . $userFiles[$i], "r");
+      $userData = json_decode(fread($userFile, filesize($usersFolder . $userFiles[$i])), true);
+
+      array_push($users, $userData);
+    }
+  }
 }
+
+include("../header.php");
 ?>
 
 <div class="row">
@@ -44,6 +61,32 @@ if($cronofy->access_token != ""){
         <tr>
           <td><?= $resources[$i]["name"] ?></td>
           <td><?= $resources[$i]["email"] ?></td>
+        </tr>
+      <? } ?>
+    </tbody>
+  </table>
+
+  <h3>Users</h3>
+
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <? for($i = 0; $i < count($users); $i++){ ?>
+        <tr>
+          <td><?= $users[$i]["email"] ?></td>
+          <td><?= $users[$i]["status"] ?></td>
+          <td>
+            <a href="/service_account_users/?email=<?= $users["email"] ?>">
+              View
+            </a>
+          </td>
         </tr>
       <? } ?>
     </tbody>
