@@ -84,7 +84,7 @@ include("../header.php");
           <td><?= $users[$i]["status"] ?></td>
           <td>
             <? if($users[$i]["status"] == "Linked"){ ?>
-              <a href="/service_account_users/?email=<?= $users[$i]["email"] ?>">
+              <a href="/service_account_users/show.php?email=<?= $users[$i]["email"] ?>">
                 View
               </a>
             <? } ?>

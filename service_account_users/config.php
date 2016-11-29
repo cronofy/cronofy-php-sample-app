@@ -1,5 +1,5 @@
 <?php
-include("../globals.php");
+include(__DIR__ . '/../globals.php');
 
 if(!isset($_GET['email'])){
   header('Location: ' . $GLOBALS['DOMAIN'] . '/enterprise_connect/');

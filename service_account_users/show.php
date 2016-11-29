@@ -40,7 +40,7 @@ include "../header.php"; ?>
             <?= $profile["calendars"][$j]["calendar_name"] ?>
           </td>
           <td>
-            <a href="/calendars/show.php?calendarId=<?= $profile["calendars"][$j]["calendar_id"] ?>">
+            <a href="/service_account_users/calendars/show.php?email=<?= $_GET['email'] ?>&calendarId=<?= $profile["calendars"][$j]["calendar_id"] ?>">
               View
             </a>
           </td>
