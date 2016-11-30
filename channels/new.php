@@ -11,7 +11,7 @@ include("../header.php"); ?>
   <form class="form-horizontal" action="/channels/create.php" method="post">
     <fieldset>
       <div class="form-group">
-        <label class="control-label col-lg-2">Calendar Path</label>
+        <label class="control-label col-lg-2">Channel Path</label>
         <div class="col-lg-10">
           <div class="col-xs-5 col-sm-4 col-md-3 text-right" style="margin-top: 8px"><?= $GLOBALS['DOMAIN'] ?>/push/?path=</div>
           <div class="col-xs-7 col-sm-8 col-md-9">
