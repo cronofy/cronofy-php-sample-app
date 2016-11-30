@@ -11,6 +11,8 @@ if (!isset($_GET['code'])) {
     "scope" => array("read_account","create_calendar","list_calendars","read_events","create_event","delete_event","read_free_busy","change_participation_status"),
   ));
 
+  DebugLog("Redirect user to OAuth");
+
   header('Location: ' . $authorizationUrl);
   exit;
 } else {
@@ -19,6 +21,10 @@ if (!isset($_GET['code'])) {
 
     $_SESSION['access_token'] = $cronofy->access_token;
     $_SESSION['refresh_token'] = $cronofy->refresh_token;
+
+    DebugLog("User OAuth successful");
+  } catch(CronofyException $ex) {
+    DebugLog("User OAuth unsuccessful - " . print_r($ex->error_details(), true));
   } finally {
     header('Location: ' . $GLOBALS['DOMAIN']);
   }
