@@ -7,6 +7,16 @@ include("../header.php");
 <h2>Enterprise Connect - User Authorization</h2>
 
 <div class="well">
+  <? if(isset($_GET['errors'])){ ?>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul>
+        <? for($i = 0; $i < count($_GET['errors']); $i++){ ?>
+          <li><?= $_GET['errors'][$i] ?></li>
+        <? } ?>
+      </ul>
+    </div>
+  <? } ?>
+
   <form class="form-horizontal" action="create.php" method="post">
     <fieldset>
       <div class="form-group">

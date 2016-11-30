@@ -1,6 +1,19 @@
 <?php
 include("./config.php");
 
+$errors = [];
+
+if($_POST['user']['email'] == ""){
+  array_push($errors, "errors[]=" . urlencode("Email cannot be blank"));
+}
+if($_POST['user']['scope'] == ""){
+  array_push($errors, "errors[]=" . urlencode("Scope cannot be blank"));
+}
+
+if(count($errors) > 0){
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/enterprise_connect/new.php?' . join('&', $errors));
+}
+
 $cronofy->authorize_with_service_account(Array(
   "email" => $_POST['user']['email'],
   "scope" => $_POST['user']['scope'],
