@@ -34,6 +34,8 @@ $cronofy->upsert_event(Array(
   "end" => date('c', strtotime($_POST['event']['end'])),
 ));
 
+DebugLog("Create event success - event_id=`" . $_POST['event']['event_id'] . "` - calendar_id=`" . $_POST['event']['calendar_id'] . "` - summary=`" . $_POST['event']['summary'] . "` - description=`" . $_POST['event']['description'] . "` - start=`" . $_POST['event']['start'] . "` - end=`" . $_POST['event']['end'] . "`");
+
 header('Location: ' . $GLOBALS['DOMAIN'] . '/calendars/show.php?calendarId=' . $_POST['event']['calendar_id']);
 exit;
 
