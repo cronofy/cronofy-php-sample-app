@@ -2,7 +2,7 @@
 include("../config.php");
 
 if(!isset($_GET['profileId'])){
-  header('Location: ' . $globals['DOMAIN'] . '/profiles/');
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles/');
   die;
 }
 
@@ -15,7 +15,7 @@ for($i = 0; $i < count($profiles); $i++){
 }
 
 if(!isset($profile)){
-  header('Location: ' . $globals['DOMAIN'] . '/profiles/');
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/profiles/');
   die;
 }
 
@@ -24,6 +24,16 @@ include("../header.php"); ?>
 <h2><?= $profile["profile_name"] ?> - New Calendar</h2>
 
 <div class="well">
+  <? if(isset($_GET['errors'])){ ?>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul>
+        <? for($i = 0; $i < count($_GET['errors']); $i++){ ?>
+          <li><?= $_GET['errors'][$i] ?></li>
+        <? } ?>
+      </ul>
+    </div>
+  <? } ?>
+
   <form class="form-horizontal" action="/calendars/create.php" method="post">
     <input type="hidden" value="<?= $profile["profile_id"] ?>" name="calendar[profile_id]" />
 
