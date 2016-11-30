@@ -24,6 +24,16 @@ include("../../header.php"); ?>
 <h2><?= $calendar["calendar_name"] ?> - New Event</h2>
 
 <div class="well">
+  <? if(isset($_GET['errors'])){ ?>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul>
+        <? for($i = 0; $i < count($_GET['errors']); $i++){ ?>
+          <li><?= $_GET['errors'][$i] ?></li>
+        <? } ?>
+      </ul>
+    </div>
+  <? } ?>
+
   <form class="form-horizontal" action="/service_account_users/events/create.php" method="post">
     <input type="hidden" value="<?= $calendar["calendar_id"] ?>" name="event[calendar_id]" />
     <input type="hidden" value="<?= $_GET['email'] ?>" name="email" />
