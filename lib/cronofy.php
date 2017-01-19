@@ -19,7 +19,7 @@ class CronofyException extends Exception
 
 class Cronofy
 {
-    const USERAGENT = 'Cronofy PHP 0.6';
+    const USERAGENT = 'Cronofy PHP 0.8';
     const API_ROOT_URL = 'https://api.cronofy.com';
     const API_VERSION = 'v1';
 
@@ -156,21 +156,17 @@ class Cronofy
           scope : Array. An array of scopes to be granted by the access token. Possible scopes detailed in the Cronofy API documentation. REQUIRED
           delegated_scope : Array. An array of scopes to be granted that will be allowed to be granted to the account's users. REQUIRED
           state : String. A value that will be returned to you unaltered along with the user's authorization request decsion. OPTIONAL
-          avoid_linking : Boolean when true means we will avoid linking calendar accounts together under one set of credentials. OPTIONAL
 
           Response :
           $url : String. The URL to authorize your enterprise connect access to the Cronofy API
          */
 
-        $scope_list = join(" ", $params['scope']);
-        $delegated_scope_list = join(" ", $params['delegated_scope']);
+        $scope_list = rawurlencode(join(" ", $params['scope']));
+        $delegated_scope_list = rawurlencode(join(" ", $params['delegated_scope']));
 
         $url = "https://app.cronofy.com/enterprise_connect/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list . "&delegated_scope=" . $delegated_scope_list;
         if (!empty($params['state'])) {
-            $url.="&state=" . $params['state'];
-        }
-        if (!empty($params['avoid_linking'])) {
-            $url.="&avoid_linking=" . $params['avoid_linking'];
+            $url.="&state=" . rawurlencode($params['state']);
         }
         return $url;
     }
@@ -320,6 +316,8 @@ class Cronofy
           Time start: The start time can be provided as a simple Time string or an object with two attributes, time and tzid. REQUIRED
           Time end: The end time can be provided as a simple Time string or an object with two attributes, time and tzid. REQUIRED
           String location.description : The String describing the event's location. OPTIONAL
+          Array reminders : An array of arrays detailing a length of time and a quantity.
+                            for example: array(array("minutes" => 30), array("minutes" => 1440))
 
 
           returns true on success, associative array of errors on failure
@@ -337,6 +335,9 @@ class Cronofy
         }
         if (!empty($params['location']['description'])) {
             $postfields['location']['description'] = $params['location']['description'];
+        }
+        if(!empty($params['reminders'])) {
+            $postfields['reminders'] = $params['reminders'];
         }
 
         return $this->http_post("/" . self::API_VERSION . "/calendars/" . $params['calendar_id'] . "/events", $postfields);
@@ -430,14 +431,46 @@ class Cronofy
         return $this->http_post("/" . self::API_VERSION . "/calendars", $params);
     }
 
-    public function resources()
+    public function change_participation_status($params)
     {
         /*
-          returns $result - Array of resources. Details are available in the Cronofy API Documentation
+          calendar_id : The ID of the calendar holding the event. REQUIRED
+          event_uid : The UID of the event to chang ethe participation status of. REQUIRED
+          status : The new participation status for the event. Accepted values are: accepted, tentative, declined. REQUIRED
          */
-        return $this->http_get('/' . self::API_VERSION . "/resources");
+        $postfields = array(
+            "status" => $params["status"]
+        );
+
+        return $this->http_post("/" . self::API_VERSION . "/calendars/" . $params["calendar_id"] . "/events/" . $params["event_uid"] . "/participation_status", $postfields);
     }
 
+    public function availability($params)
+    {
+        /*
+          participants : An array of the groups of participants whose availability should be taken into account. REQUIRED
+                         for example: array(
+                                        array("members" => array(
+                                          array("sub" => "acc_567236000909002"),
+                                          array("sub" => "acc_678347111010113")
+                                        ), "required" => "all")
+                                      )
+          required_duration : Duration that an available period must last to be considered viable. REQUIRED
+                         for example: array("minutes" => 60)
+          available_periods : An array of available periods within which suitable matches may be found. REQUIRED
+                         for example: array(
+                                        array("start" => "2017-01-01T09:00:00Z", "end" => "2017-01-01T18:00:00Z"),
+                                        array("start" => "2017-01-02T09:00:00Z", "end" => "2017-01-02T18:00:00Z")
+                                      )
+         */
+        $postfields = array(
+            "participants" => $params["participants"],
+            "required_duration" => $params["required_duration"],
+            "available_periods" => $params["available_periods"]
+        );
+
+        return $this->http_post("/" . self::API_VERSION . "/availability", $postfields);
+    }
 
     private function api_url($path)
     {
