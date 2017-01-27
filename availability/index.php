@@ -3,8 +3,7 @@ include("../config.php");
 
 $availablePeriods = [];
 
-if(ISSET($_POST['availabilityInfo'])){
-  $errors = [];
+$errors = [];
 
   if($_POST['availabilityInfo']['accountId'][0] == ""){
     array_push($errors, "Account ID 1 cannot be blank");
