@@ -81,6 +81,19 @@ include("../header.php"); ?>
 
   <dt>End Date</dt>
   <dd><?= $event["end"] ?></dd>
+
+<? if(isset($event["location"]["lat"]) && isset($event["location"]["long"]) && isset($GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"])){ ?>
+  <dt>Location</dt>
+  <dd>
+    <iframe
+    width="600"
+    height="450"
+    frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/place?key=<?= $GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"] ?>
+      &q=<?= $event["location"]["lat"] ?>,<?= $event["location"]["long"] ?>" allowfullscreen>
+  </iframe>
+  </dd>
+<? } ?>
 </dl>
 
 <?php include("../footer.php"); ?>
