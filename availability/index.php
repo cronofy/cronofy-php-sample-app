@@ -3,9 +3,9 @@ include("../config.php");
 
 $availablePeriods = [];
 
-if(ISSET($_POST['availabilityInfo'])){
-  $errors = [];
+$errors = [];
 
+if(ISSET($_POST['availabilityInfo'])){
   if($_POST['availabilityInfo']['accountId'][0] == ""){
     array_push($errors, "Account ID 1 cannot be blank");
   }
@@ -17,6 +17,9 @@ if(ISSET($_POST['availabilityInfo'])){
   }
   if($_POST['availabilityInfo']['requiredParticipants'] == ""){
     array_push($errors, "Required participants cannot be blank");
+  }
+  if(!($_POST['availabilityInfo']['requiredParticipants'] == "all" || $_POST['availabilityInfo']['requiredParticipants'] == "1")){
+    array_push($errors, "Required participants must be \"all\" or 1");
   }
   if($_POST['availabilityInfo']['duration'] == ""){
     array_push($errors, "Duration cannot be blank");
@@ -100,7 +103,6 @@ include("../header.php"); ?>
         <div class="col-lg-10">
           <select name="availabilityInfo[requiredParticipants]" class="form-control">
             <option <? if(($_POST['availabilityInfo']['requiredParticipants']??"") == "1"){?>selected<?}?>>1</option>
-            <option <? if(($_POST['availabilityInfo']['requiredParticipants']??"") == "2"){?>selected<?}?>>2</option>
             <option value="all" <? if(($_POST['availabilityInfo']['requiredParticipants']??"") == "all"){?>selected<?}?>>All</option>
           </select>
         </div>
