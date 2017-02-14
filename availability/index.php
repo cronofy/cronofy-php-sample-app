@@ -66,6 +66,9 @@ $authUrl = $cronofy->getAuthorizationURL(array(
   "scope" => array("read_account", "read_events", "read_free_busy"),
 ));
 
+$startDate = (new DateTime())->modify('+1 day');
+$endDate = (new DateTime())->modify('+2 day');
+
 include("../header.php"); ?>
 
 <h2>Availability</h2>
@@ -118,14 +121,14 @@ include("../header.php"); ?>
       <div class="form-group">
         <label class="control-label col-lg-2">Start Time</label>
         <div class="col-lg-10">
-          <input class="form-control" type="datetime-local" name="availabilityInfo[start]" value="<?= $_POST['availabilityInfo']['start'] ?? "" ?>" />
+          <input class="form-control" type="datetime-local" name="availabilityInfo[start]" value="<?= $_POST['availabilityInfo']['start'] ?? $startDate->format('Y-m-d\T00:00') ?>" />
         </div>
       </div>
 
       <div class="form-group">
         <label class="control-label col-lg-2">End Time</label>
         <div class="col-lg-10">
-          <input class="form-control" type="datetime-local" name="availabilityInfo[end]" value="<?= $_POST['availabilityInfo']['end'] ?? "" ?>" />
+          <input class="form-control" type="datetime-local" name="availabilityInfo[end]" value="<?= $_POST['availabilityInfo']['end'] ?? $endDate->format('Y-m-d\T00:00') ?>" />
         </div>
       </div>
 
