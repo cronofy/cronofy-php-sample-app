@@ -90,7 +90,6 @@ include("../header.php"); ?>
         <label class="control-label col-lg-2">Account ID 1</label>
         <div class="col-lg-10">
           <input class="form-control" type="text" name="availabilityInfo[accountId][0]" value="<?= $_POST['availabilityInfo']['accountId'][0] ?? $cronofy->get_account()["account"]["account_id"] ?>" />
-          <span class="help-block">Click <a href="<?= $authUrl ?>" target="_blank">here</a> to find your Account ID</span>
         </div>
       </div>
 
@@ -98,6 +97,7 @@ include("../header.php"); ?>
         <label class="control-label col-lg-2">Account ID 2</label>
         <div class="col-lg-10">
           <input class="form-control" type="text" name="availabilityInfo[accountId][1]" value="<?= $_POST['availabilityInfo']['accountId'][1] ?? "" ?>" />
+          <span class="help-block">Send someone <a href="<?= $authUrl ?>" target="_blank">this</a> to find their Account ID</span>
         </div>
       </div>
 
