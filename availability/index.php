@@ -9,9 +9,6 @@ if(ISSET($_POST['availabilityInfo'])){
   if($_POST['availabilityInfo']['accountId'][0] == ""){
     array_push($errors, "Account ID 1 cannot be blank");
   }
-  if($_POST['availabilityInfo']['accountId'][1] == ""){
-    array_push($errors, "Account ID 2 cannot be blank");
-  }
   if($_POST['availabilityInfo']['accountId'][0] == $_POST['availabilityInfo']['accountId'][1]){
     array_push($errors, "Account IDs must be different");
   }
@@ -44,21 +41,24 @@ if(ISSET($_POST['availabilityInfo'])){
   }
 
   if(count($errors) == 0){
-    $availabilityInfo = $cronofy->availability(
-      array("participants" => array(array("members" => array(
-        array("sub" => $_POST['availabilityInfo']['accountId'][0]),
-        array("sub" => $_POST['availabilityInfo']['accountId'][1])
-      ), "required" => $_POST['availabilityInfo']['requiredParticipants'])),
-      "required_duration" => array("minutes" => $_POST['availabilityInfo']['duration']),
-      "available_periods" => array(
-        array(
-          "start" => date('c', strtotime($_POST['availabilityInfo']['start'])),
-          "end" => date('c', strtotime($_POST['availabilityInfo']['end']))
-          )))
-        );
+    $params = array("participants" => array(array("members" => array(
+      array("sub" => $_POST['availabilityInfo']['accountId'][0]),
+    ), "required" => $_POST['availabilityInfo']['requiredParticipants'])),
+    "required_duration" => array("minutes" => $_POST['availabilityInfo']['duration']),
+    "available_periods" => array(
+      array(
+        "start" => date('c', strtotime($_POST['availabilityInfo']['start'])),
+        "end" => date('c', strtotime($_POST['availabilityInfo']['end']))
+      )));
 
-        $availablePeriods = $availabilityInfo["available_periods"];
-      }
+    if($_POST['availabilityInfo']['accountId'][1]){
+      array_push($params["participants"]["members"], array("sub" => $_POST['availabilityInfo']['accountId'][1]));
+    }
+
+    $availabilityInfo = $cronofy->availability($params);
+
+    $availablePeriods = $availabilityInfo["available_periods"];
+  }
 }
 
 $authUrl = $cronofy->getAuthorizationURL(array(
