@@ -84,16 +84,24 @@ include("../header.php"); ?>
 
 <? if(isset($event["location"]["lat"]) && isset($event["location"]["long"]) && isset($GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"])){ ?>
   <dt>Location</dt>
-  <dd>
-    <iframe
-    width="600"
-    height="450"
-    frameborder="0" style="border:0"
-    src="https://www.google.com/maps/embed/v1/place?key=<?= $GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"] ?>
+<? if(isset($event["location"]["lat"]) && isset($event["location"]["long"])){ ?>
+    <? if(isset($GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"])) { ?>
+    <dt>Map location</dt>
+    <dd>
+      <iframe
+      width="600"
+      height="450"
+      frameborder="0" style="border:0"
+      src="https://www.google.com/maps/embed/v1/place?key=<?= $GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"] ?>
       &q=<?= $event["location"]["lat"] ?>,<?= $event["location"]["long"] ?>" allowfullscreen>
-  </iframe>
+    </iframe>
+    </dl>
+    <? } else { ?>
+    <dt>Latitude, Longitude</dt>
+    <dd><?= $event["location"]["lat"] ?>, <?= $event["location"]["long"] ?></dd>
+    <? } ?>
   </dd>
-<? } ?>
+  <? } ?>
 </dl>
 
 <?php include("../footer.php"); ?>
