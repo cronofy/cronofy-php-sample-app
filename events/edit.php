@@ -94,15 +94,22 @@ include("../header.php"); ?>
         </div>
       </div>
 
+      <div class="form-group">
+        <label class="control-label col-lg-2">Location Description</label>
+        <div class="col-lg-10">
+          <input class="form-control" type="text" name="event[location][description]" value="<?= isset($event["location"]) ? $event["location"]["description"] : "" ?>" />
+        </div>
+      </div>
+
     <? if($calendar["provider_name"] == "apple" || $calendar["provider_name"] == "google"){ ?>
       <div class="form-group">
         <label class="control-label col-lg-2">Latitude</label>
         <div class="col-lg-10">
-          <input class="form-control" name="event[location][lat]" value="<?= $event["location"]["lat"] ?>" />
+          <input class="form-control" name="event[location][lat]" value="<?= isset($event["location"]) ? $event["location"]["lat"] : "" ?>" />
         </div>
         <label class="control-label col-lg-2">Longitude</label>
         <div class="col-lg-10">
-          <input class="form-control" name="event[location][long]" value="<?= $event["location"]["long"] ?>" />
+          <input class="form-control" name="event[location][long]" value="<?= isset($event["location"]) ? $event["location"]["long"] : "" ?>" />
         </div>
       </div>
     <? } ?>

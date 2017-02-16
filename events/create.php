@@ -4,7 +4,7 @@ include("../config.php");
 
 $errors = [];
 
-$locationSet = false;
+$geoLocationSet = false;
 
 if($_POST['event']['event_id'] == ""){
   array_push($errors, "errors[]=" . urlencode("Event ID cannot be blank"));
@@ -22,7 +22,7 @@ if($_POST['event']['start'] > $_POST['event']['end']){
   array_push($errors, "errors[]=" . urlencode("Start time cannot be after end time"));
 }
 if($_POST['event']['location']['lat'] != "" || $_POST['event']['location']['long'] != ""){
-  $locationSet = true;
+  $geoLocationSet = true;
 
   if($_POST['event']['location']['lat'] == ""){
     array_push($errors, "errors[]=" . urlencode("Latitude must be set if longitude is set"));
@@ -54,18 +54,26 @@ $event = Array(
   "end" => date('c', strtotime($_POST['event']['end'])),
 );
 
-if($locationSet){
+if($_POST['event']['location']['description'] != ''){
   $event["location"] = array(
-    "lat" => $_POST['event']['location']['lat'],
-    "long" => $_POST['event']['location']['long']
+    "description" => $_POST['event']['location']['description']
   );
+}
+
+if($geoLocationSet){
+  if(!isset($event["location"])){
+    $event["location"] = array();
+  }
+
+  $event["location"]["lat"] = $_POST['event']['location']['lat'];
+  $event["location"]["long"] = $_POST['event']['location']['long'];
 }
 
 $cronofy->upsert_event($event);
 
 $successLog = "Create event success - event_id=`" . $_POST['event']['event_id'] . "` - calendar_id=`" . $_POST['event']['calendar_id'] . "` - summary=`" . $_POST['event']['summary'] . "` - description=`" . $_POST['event']['description'] . "` - start=`" . $_POST['event']['start'] . "` - end=`" . $_POST['event']['end'] . "`";
 
-if($locationSet){
+if($geoLocationSet){
   $successLog .= " - location.lat=`" . $_POST['event']['location']['lat'] . "` - location.long=`" . $_POST['event']['location']['long'] . "`";
 }
 

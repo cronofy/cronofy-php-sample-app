@@ -82,8 +82,11 @@ include("../header.php"); ?>
   <dt>End Date</dt>
   <dd><?= $event["end"] ?></dd>
 
-<? if(isset($event["location"]["lat"]) && isset($event["location"]["long"]) && isset($GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"])){ ?>
+<? if(isset($event["location"]["description"])) { ?>
   <dt>Location</dt>
+  <dd><?= $event["location"]["description"] ?></dd>
+<? } ?>
+
 <? if(isset($event["location"]["lat"]) && isset($event["location"]["long"])){ ?>
     <? if(isset($GLOBALS["GOOGLE_MAPS_EMBED_API_KEY"])) { ?>
     <dt>Map location</dt>
