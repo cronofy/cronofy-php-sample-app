@@ -44,3 +44,7 @@ Once you have ngrok installed you can initialise it for your application by usin
 (Replace `localhost:8888` with `localhost:[port number]` where appropriate)
 
 Your terminal will then display a URL in the format `http://[unique identifier].ngrok.io`. You will need to set the `DOMAIN` variable in the application's `globals.php` in order to test these remote features.
+
+### Setting up Google Maps
+
+In order to view geo-location that has been set on events you will need to set the `GOOGLE_MAPS_EMBED_API_KEY` in the application's `globals.php` file. You can get your key from here by clicking "GET A KEY": [Google Maps Embed API](https://developers.google.com/maps/documentation/embed/guide)

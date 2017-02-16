@@ -74,6 +74,26 @@ include("../header.php"); ?>
       </div>
 
       <div class="form-group">
+        <label class="control-label col-lg-2">Location Description</label>
+        <div class="col-lg-10">
+          <input class="form-control" type="text" name="event[location][description]" />
+        </div>
+      </div>
+      
+    <? if($calendar["provider_name"] == "apple" || $calendar["provider_name"] == "google"){ ?>
+      <div class="form-group">
+        <label class="control-label col-lg-2">Latitude</label>
+        <div class="col-lg-10">
+          <input class="form-control" name="event[location][lat]" />
+        </div>
+        <label class="control-label col-lg-2">Longitude</label>
+        <div class="col-lg-10">
+          <input class="form-control" name="event[location][long]" />
+        </div>
+      </div>
+    <? } ?>
+
+      <div class="form-group">
         <div class="col-lg-10">
           <input type="submit" value="Create" class="btn btn-success btn-primary" />
         </div>

@@ -84,7 +84,6 @@ include("../header.php"); ?>
         <label class="control-label col-lg-2">Start Time</label>
         <div class="col-lg-10">
           <input class="form-control" type="datetime-local" name="event[start]" value="<?= substr($event["start"], 0, strlen($event["start"])-4) ?>" />
-          <?= $event["start"] ?>
         </div>
       </div>
 
@@ -94,6 +93,26 @@ include("../header.php"); ?>
           <input class="form-control" type="datetime-local" name="event[end]" value="<?= substr($event["end"], 0, strlen($event["end"])-4) ?>" />
         </div>
       </div>
+
+      <div class="form-group">
+        <label class="control-label col-lg-2">Location Description</label>
+        <div class="col-lg-10">
+          <input class="form-control" type="text" name="event[location][description]" value="<?= isset($event["location"]) ? $event["location"]["description"] : "" ?>" />
+        </div>
+      </div>
+
+    <? if($calendar["provider_name"] == "apple" || $calendar["provider_name"] == "google"){ ?>
+      <div class="form-group">
+        <label class="control-label col-lg-2">Latitude</label>
+        <div class="col-lg-10">
+          <input class="form-control" name="event[location][lat]" value="<?= isset($event["location"]) ? $event["location"]["lat"] : "" ?>" />
+        </div>
+        <label class="control-label col-lg-2">Longitude</label>
+        <div class="col-lg-10">
+          <input class="form-control" name="event[location][long]" value="<?= isset($event["location"]) ? $event["location"]["long"] : "" ?>" />
+        </div>
+      </div>
+    <? } ?>
 
       <div class="form-group">
         <div class="col-lg-10">
