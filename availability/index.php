@@ -141,16 +141,18 @@ include("../header.php"); ?>
   </form>
 </div>
 
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Start Time</th>
-      <th>End Time</th>
-      <th>Participants</th>
-    </tr>
-  </thead>
+<? if(ISSET($_POST['availabilityInfo'])) { ?>
+  <? if(count($availablePeriods) > 0){ ?>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Participants</th>
+      </tr>
+    </thead>
 
-  <tbody>
+    <tbody>
     <? for($i = 0; $i < count($availablePeriods); $i++){ ?>
       <tr>
         <td>
@@ -160,11 +162,15 @@ include("../header.php"); ?>
           <?= $availablePeriods[$i]["end"] ?>
         </td>
         <td>
-          <? for($j = 0; $j < count($availablePeriods[$i]["participants"]); $j++){ ?>
-            <?= $availablePeriods[$i]["participants"][$j]["sub"] ?><br />
+        <? for($j = 0; $j < count($availablePeriods[$i]["participants"]); $j++){ ?>
+          <?= $availablePeriods[$i]["participants"][$j]["sub"] ?><br />
           <? } ?>
         </td>
       </tr>
-      <? } ?>
+    <? } ?>
     </tbody>
   </table>
+  <? } else { ?>
+  No available periods for those options
+  <? } ?>
+<? } ?>
