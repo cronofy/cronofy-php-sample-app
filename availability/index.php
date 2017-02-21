@@ -9,9 +9,6 @@ if(ISSET($_POST['availabilityInfo'])){
   if($_POST['availabilityInfo']['accountId'][0] == ""){
     array_push($errors, "Account ID 1 cannot be blank");
   }
-  if($_POST['availabilityInfo']['accountId'][1] == ""){
-    array_push($errors, "Account ID 2 cannot be blank");
-  }
   if($_POST['availabilityInfo']['accountId'][0] == $_POST['availabilityInfo']['accountId'][1]){
     array_push($errors, "Account IDs must be different");
   }
@@ -44,27 +41,33 @@ if(ISSET($_POST['availabilityInfo'])){
   }
 
   if(count($errors) == 0){
-    $availabilityInfo = $cronofy->availability(
-      array("participants" => array(array("members" => array(
-        array("sub" => $_POST['availabilityInfo']['accountId'][0]),
-        array("sub" => $_POST['availabilityInfo']['accountId'][1])
-      ), "required" => $_POST['availabilityInfo']['requiredParticipants'])),
-      "required_duration" => array("minutes" => $_POST['availabilityInfo']['duration']),
-      "available_periods" => array(
-        array(
-          "start" => date('c', strtotime($_POST['availabilityInfo']['start'])),
-          "end" => date('c', strtotime($_POST['availabilityInfo']['end']))
-          )))
-        );
+    $params = array("participants" => array(array("members" => array(
+      array("sub" => $_POST['availabilityInfo']['accountId'][0]),
+    ), "required" => $_POST['availabilityInfo']['requiredParticipants'])),
+    "required_duration" => array("minutes" => $_POST['availabilityInfo']['duration']),
+    "available_periods" => array(
+      array(
+        "start" => date('c', strtotime($_POST['availabilityInfo']['start'])),
+        "end" => date('c', strtotime($_POST['availabilityInfo']['end']))
+      )));
 
-        $availablePeriods = $availabilityInfo["available_periods"];
-      }
+    if($_POST['availabilityInfo']['accountId'][1]){
+      array_push($params["participants"]["members"], array("sub" => $_POST['availabilityInfo']['accountId'][1]));
+    }
+
+    $availabilityInfo = $cronofy->availability($params);
+
+    $availablePeriods = $availabilityInfo["available_periods"];
+  }
 }
 
 $authUrl = $cronofy->getAuthorizationURL(array(
   "redirect_uri" => $GLOBALS['DOMAIN'] . "/availability/account_id.php",
   "scope" => array("read_account", "read_events", "read_free_busy"),
 ));
+
+$startDate = (new DateTime())->modify('+1 day');
+$endDate = (new DateTime())->modify('+2 day');
 
 include("../header.php"); ?>
 
@@ -86,8 +89,7 @@ include("../header.php"); ?>
       <div class="form-group">
         <label class="control-label col-lg-2">Account ID 1</label>
         <div class="col-lg-10">
-          <input class="form-control" type="text" name="availabilityInfo[accountId][0]" value="<?= $_POST['availabilityInfo']['accountId'][0] ?? "" ?>" />
-          <span class="help-block">Click <a href="<?= $authUrl ?>" target="_blank">here</a> to find your Account ID</span>
+          <input class="form-control" type="text" name="availabilityInfo[accountId][0]" value="<?= $_POST['availabilityInfo']['accountId'][0] ?? $cronofy->get_account()["account"]["account_id"] ?>" />
         </div>
       </div>
 
@@ -95,6 +97,7 @@ include("../header.php"); ?>
         <label class="control-label col-lg-2">Account ID 2</label>
         <div class="col-lg-10">
           <input class="form-control" type="text" name="availabilityInfo[accountId][1]" value="<?= $_POST['availabilityInfo']['accountId'][1] ?? "" ?>" />
+          <span class="help-block">Send someone <a href="<?= $authUrl ?>" target="_blank">this</a> to find their Account ID</span>
         </div>
       </div>
 
@@ -118,14 +121,14 @@ include("../header.php"); ?>
       <div class="form-group">
         <label class="control-label col-lg-2">Start Time</label>
         <div class="col-lg-10">
-          <input class="form-control" type="datetime-local" name="availabilityInfo[start]" value="<?= $_POST['availabilityInfo']['start'] ?? "" ?>" />
+          <input class="form-control" type="datetime-local" name="availabilityInfo[start]" value="<?= $_POST['availabilityInfo']['start'] ?? $startDate->format('Y-m-d\T00:00') ?>" />
         </div>
       </div>
 
       <div class="form-group">
         <label class="control-label col-lg-2">End Time</label>
         <div class="col-lg-10">
-          <input class="form-control" type="datetime-local" name="availabilityInfo[end]" value="<?= $_POST['availabilityInfo']['end'] ?? "" ?>" />
+          <input class="form-control" type="datetime-local" name="availabilityInfo[end]" value="<?= $_POST['availabilityInfo']['end'] ?? $endDate->format('Y-m-d\T00:00') ?>" />
         </div>
       </div>
 
@@ -138,16 +141,18 @@ include("../header.php"); ?>
   </form>
 </div>
 
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Start Time</th>
-      <th>End Time</th>
-      <th>Participants</th>
-    </tr>
-  </thead>
+<? if(ISSET($_POST['availabilityInfo'])) { ?>
+  <? if(count($availablePeriods) > 0){ ?>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Participants</th>
+      </tr>
+    </thead>
 
-  <tbody>
+    <tbody>
     <? for($i = 0; $i < count($availablePeriods); $i++){ ?>
       <tr>
         <td>
@@ -157,11 +162,15 @@ include("../header.php"); ?>
           <?= $availablePeriods[$i]["end"] ?>
         </td>
         <td>
-          <? for($j = 0; $j < count($availablePeriods[$i]["participants"]); $j++){ ?>
-            <?= $availablePeriods[$i]["participants"][$j]["sub"] ?><br />
+        <? for($j = 0; $j < count($availablePeriods[$i]["participants"]); $j++){ ?>
+          <?= $availablePeriods[$i]["participants"][$j]["sub"] ?><br />
           <? } ?>
         </td>
       </tr>
-      <? } ?>
+    <? } ?>
     </tbody>
   </table>
+  <? } else { ?>
+  No available periods for those options
+  <? } ?>
+<? } ?>
