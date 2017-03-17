@@ -19,7 +19,7 @@ class CronofyException extends Exception
 
 class Cronofy
 {
-    const USERAGENT = 'Cronofy PHP 0.11';
+    const USERAGENT = 'Cronofy PHP 1.01';
     const API_VERSION = 'v1';
 
     public $api_root_url;
@@ -57,9 +57,9 @@ class Cronofy
     {
         $data_center_addin = $data_center ? '-' . $data_center : '';
 
-        $this->api_root_url = "http://local$data_center_addin.cronofy.com";
-        $this->app_root_url = "http://local$data_center_addin.cronofy.com";
-        $this->host_domain = "local$data_center_addin.cronofy.com";
+        $this->api_root_url = "https://api$data_center_addin.cronofy.com";
+        $this->app_root_url = "https://app$data_center_addin.cronofy.com";
+        $this->host_domain = "api$data_center_addin.cronofy.com";
     }
 
     private function http_get($path, array $params = array())
@@ -336,22 +336,20 @@ class Cronofy
           Array reminders : An array of arrays detailing a length of time and a quantity. OPTIONAL
                             for example: array(array("minutes" => 30), array("minutes" => 1440))
           String transparency : The transparency of the event. Accepted values are "transparent" and "opaque". OPTIONAL
+          Array attendees : An array of "invite" and "reject" arrays which are lists of attendees to invite and remove from the event. OPTIONAL
+                            for example: array("invite" => array(array("email" => "new_invitee@test.com", "display_name" => "New Invitee"))
+                                               "reject" => array(array("email" => "old_invitee@test.com", "display_name" => "Old Invitee")))
 
           returns true on success, associative array of errors on failure
          */
         $postfields = array(
+            'event_id' => $params['event_id'],
             'summary' => $params['summary'],
             'description' => $params['description'],
             'start' => $params['start'],
             'end' => $params['end']
         );
 
-        if (!empty($params['event_id'])) {
-          $postfields['event_id'] = $params['event_id'];
-        }
-        if (!empty($params['event_uid'])) {
-          $postfields['event_uid'] = $params['event_uid'];
-        }
         if (!empty($params['tzid'])) {
             $postfields['tzid'] = $params['tzid'];
         }
