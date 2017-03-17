@@ -115,3 +115,7 @@ function ServerErrorBlock($errorCode, $errorStatus, $serverError){
 </div>
   ";
 }
+
+function ErrorToQueryStringParams($error){
+  return 'errorCode=' . $error->getCode() . '&errorStatus=' . urlencode($error->getMessage()) . '&serverError=' . urlencode(print_r($error->error_details(), true));
+}

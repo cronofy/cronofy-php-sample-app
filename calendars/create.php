@@ -11,7 +11,7 @@ $result = CronofyRequest(function(){
 });
 
 if($result["error"]){
-  header('Location: ' . $GLOBALS['DOMAIN'] . '/calendars/new.php?profileId=' . $_POST['calendar']['profile_id'] . '&errorCode=' . $result["error"]->getCode() . '&errorStatus=' . urlencode($result["error"]->getMessage()) . '&serverError=' . urlencode(print_r($result["error"]->error_details(), true)));
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/calendars/new.php?profileId=' . $_POST['calendar']['profile_id'] . '&' . ErrorToQueryStringParams($result["error"]));
 
   exit;
 }
