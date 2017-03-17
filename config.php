@@ -29,31 +29,56 @@ $cronofy = new Cronofy(array(
   "refresh_token" => $refreshToken
 ));
 
-set_exception_handler(function($e){
-  if(is_a($e, "CronofyException")){
-    if($e->getMessage() == "Unauthorized"){
-      if($GLOBALS['cronofy']->refresh_token()){
-        DebugLog("Cronofy access token has been refreshed");
+function CronofyRequest($call){
+  $result = array(
+    "data" => null,
+    "error" => null
+  );
 
-        $_SESSION[$GLOBALS['accessTokenKey']] = $GLOBALS['cronofy']->access_token;
-        $_SESSION[$GLOBALS['refreshTokenKey']] = $GLOBALS['cronofy']->refresh_token;
-
-        header('Refresh:0');
-        die;
-      } else {
-        DebugLog("Cronofy access has been revoked");
-
-        unset($_SESSION[$GLOBALS['accessTokenKey']]);
-        unset($_SESSION[$GLOBALS['refreshTokenKey']]);
-
-        header('Location: ' . $GLOBALS['DOMAIN'] . $loginPath);
-        die;
-      }
+  try{
+    $result["data"] = $call();
+  } catch(CronofyException $ex){
+    if($ex->getCode() == 401){
+      return RefreshToken($call);
     }
 
-    DebugLog("CronofyException: message=`" . $e->getMessage() . "` error_details=`" . print_r($e->error_details(), true) . "`");
-    throw $e;
-  } else {
-    throw $e;
+    DebugLog("CronofyException: message=`" . $ex->getMessage() . "` error_details=`" . print_r($ex->error_details(), true) . "`");
+    $result["error"] = $ex;
   }
-});
+
+  return $result;
+}
+
+function RefreshToken($call){
+  try {
+    $GLOBALS['cronofy']->refresh_token();
+
+    $result = array(
+      "data" => null,
+      "error" => null
+    );
+
+    DebugLog("Cronofy access token has been refreshed");
+
+    $_SESSION[$GLOBALS['accessTokenKey']] = $GLOBALS['cronofy']->access_token;
+    $_SESSION[$GLOBALS['refreshTokenKey']] = $GLOBALS['cronofy']->refresh_token;
+  }
+  catch(CronofyException $ex){
+    DebugLog("Cronofy access has been revoked");
+
+    unset($_SESSION[$GLOBALS['accessTokenKey']]);
+    unset($_SESSION[$GLOBALS['refreshTokenKey']]);
+
+    header('Location: ' . $GLOBALS['DOMAIN'] . $GLOBALS['loginPath']);
+    die;
+  }
+
+  try{
+    $result["data"] = $call();
+  } catch(CronofyException $ex){
+    DebugLog("CronofyException: message=`" . $e->getMessage() . "` error_details=`" . print_r($e->error_details(), true) . "`");
+    $result["error"] = $ex;
+  }
+
+  return $result;
+}
