@@ -95,6 +95,18 @@ function ServerErrorBlockFromResult($result){
   return ServerErrorBlock($errorCode, $errorStatus, $serverError);
 }
 
+function ServerErrorBlockFromGet(){
+  if(!isset($_GET['errorCode'])){
+    return;
+  }
+
+  $errorCode = $_GET['errorCode'];
+  $errorStatus = $_GET['errorStatus'];
+  $serverError = $_GET['serverError'];
+
+  return ServerErrorBlock($errorCode, $errorStatus, $serverError);
+}
+
 function ServerErrorBlock($errorCode, $errorStatus, $serverError){
   return "
 <div id='error_explanation' class='alert alert-danger'>
