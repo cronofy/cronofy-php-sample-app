@@ -22,7 +22,12 @@ if(isset($_SESSION[$refreshTokenKey])){
   }
 }
 
-$cronofy = new Cronofy($GLOBALS['CRONOFY_CLIENT_ID'], $GLOBALS['CRONOFY_CLIENT_SECRET'], $accessToken, $refreshToken);
+$cronofy = new Cronofy(array(
+  "client_id" => $GLOBALS['CRONOFY_CLIENT_ID'],
+  "client_secret" => $GLOBALS['CRONOFY_CLIENT_SECRET'],
+  "access_token" => $accessToken,
+  "refresh_token" => $refreshToken
+));
 
 set_exception_handler(function($e){
   if(is_a($e, "CronofyException")){
