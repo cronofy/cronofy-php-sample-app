@@ -19,7 +19,7 @@ class CronofyException extends Exception
 
 class Cronofy
 {
-    const USERAGENT = 'Cronofy PHP 1.01';
+    const USERAGENT = 'Cronofy PHP 0.12';
     const API_VERSION = 'v1';
 
     public $api_root_url;
@@ -57,9 +57,9 @@ class Cronofy
     {
         $data_center_addin = $data_center ? '-' . $data_center : '';
 
-        $this->api_root_url = "https://api$data_center_addin.cronofy.com";
-        $this->app_root_url = "https://app$data_center_addin.cronofy.com";
-        $this->host_domain = "api$data_center_addin.cronofy.com";
+        $this->api_root_url = "http://local$data_center_addin.cronofy.com";
+        $this->app_root_url = "http://local$data_center_addin.cronofy.com";
+        $this->host_domain = "local$data_center_addin.cronofy.com";
     }
 
     private function http_get($path, array $params = array())
@@ -455,6 +455,15 @@ class Cronofy
           name : The name for the created calendar. REQUIRED
          */
         return $this->http_post("/" . self::API_VERSION . "/calendars", $params);
+    }
+
+    public function resources()
+    {
+      /*
+        returns $result - Array of resources. Details
+        are available in the Cronofy API Documentation
+       */
+      return $this->http_get('/' . self::API_VERSION . "/resources");
     }
 
     public function change_participation_status($params)
