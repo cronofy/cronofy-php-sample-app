@@ -77,7 +77,7 @@ include("../header.php"); ?>
 <h2>Availability</h2>
 
 <div class="well">
-  <?= ServerErrorBlock($result); ?>
+  <?= ServerErrorBlockFromResult($result); ?>
 
   <? if(count($errors) > 0){ ?>
     <div id="error_explanation" class="alert alert-danger">

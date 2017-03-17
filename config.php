@@ -83,19 +83,23 @@ function RefreshToken($call){
   return $result;
 }
 
-function ServerErrorBlock($result){
+function ServerErrorBlockFromResult($result){
   if(!$result || !$result["error"]){
     return;
   }
 
   $errorCode = $result["error"]->getCode();
   $errorStatus = $result["error"]->getMessage();
-  $error = $result["error"]->error_details();
+  $serverError = $result["error"]->error_details();
 
+  return ServerErrorBlock($errorCode, $errorStatus, $serverError);
+}
+
+function ServerErrorBlock($errorCode, $errorStatus, $serverError){
   return "
 <div id='error_explanation' class='alert alert-danger'>
   <h4>$errorCode - $errorStatus</h4>
-  <pre>" . print_r($error, true) ."</pre>
+  <pre>" . print_r($serverError, true) ."</pre>
 </div>
   ";
 }
