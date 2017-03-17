@@ -11,7 +11,9 @@ $result = CronofyRequest(function(){
 });
 
 if($result["error"]){
-  header('Location: ' . $GLOBALS['DOMAIN'] . '/calendars/new.php?profileId=' . $_POST['calendar']['profile_id'] . '&errorCode=' . $result["error"]->getCode() . '&errorStatus=' . urlencode($result["error"]->getMessage()) . '&serverError=' . urlencode($result["error"]->error_details()));
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/calendars/new.php?profileId=' . $_POST['calendar']['profile_id'] . '&errorCode=' . $result["error"]->getCode() . '&errorStatus=' . urlencode($result["error"]->getMessage()) . '&serverError=' . urlencode(print_r($result["error"]->error_details(), true)));
+
+  exit;
 }
 
 DebugLog("Create calendar success - profile_id=`" . $_POST['calendar']['profile_id'] . "` - name=`" . $_POST['calendar']['name'] . "`");
