@@ -14,11 +14,19 @@ if(count($errors) > 0){
   header('Location: ' . $GLOBALS['DOMAIN'] . '/enterprise_connect/new.php?' . join('&', $errors));
 }
 
-$cronofy->authorize_with_service_account(Array(
-  "email" => $_POST['user']['email'],
-  "scope" => $_POST['user']['scope'],
-  "callback_url" => $GLOBALS['DOMAIN'] . "/enterprise_connect/push/?email=" . $_POST['user']['email']
-));
+$result = CronofyRequest(function(){
+  $GLOBALS['cronofy']->authorize_with_service_account(Array(
+    "email" => $_POST['user']['email'],
+    "scope" => $_POST['user']['scope'],
+    "callback_url" => $GLOBALS['DOMAIN'] . "/enterprise_connect/push/?email=" . $_POST['user']['email']
+  ));
+});
+
+if($result["error"]){
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/enterprise_connect/new.php?' . ErrorToQueryStringParams($result["error"]));
+
+  exit;
+}
 
 DebugLog("Authorize with service account success - email=`" . $_POST['user']['email'] . "` - scope=`" . $_POST['user']['scope'] . "` - callback_url=`" . $GLOBALS['DOMAIN'] . "/enterprise_connect/push/?email=" . $_POST['user']['email'] . "`");
 

@@ -69,7 +69,15 @@ if($geoLocationSet){
   $event["location"]["long"] = $_POST['event']['location']['long'];
 }
 
-$cronofy->upsert_event($event);
+$result = CronofyRequest(function(){
+  return $GLOBALS['cronofy']->upsert_event($GLOBALS['event']);
+});
+
+if($result["error"]){
+  header('Location: ' . $GLOBALS['DOMAIN'] . '/events/new.php?calendarId=' . $_POST['event']['calendar_id'] . '&' . ErrorToQueryStringParams($result["error"]));
+
+  exit;
+}
 
 $successLog = "Create event success - event_id=`" . $_POST['event']['event_id'] . "` - calendar_id=`" . $_POST['event']['calendar_id'] . "` - summary=`" . $_POST['event']['summary'] . "` - description=`" . $_POST['event']['description'] . "` - start=`" . $_POST['event']['start'] . "` - end=`" . $_POST['event']['end'] . "`";
 

@@ -8,6 +8,8 @@ include("../header.php"); ?>
 <h2>New Channel</h2>
 
 <div class="well">
+  <?= ServerErrorBlockFromGet(); ?>
+  
   <form class="form-horizontal" action="/channels/create.php" method="post">
     <fieldset>
       <div class="form-group">

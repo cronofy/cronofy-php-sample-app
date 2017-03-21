@@ -24,6 +24,8 @@ include("../../header.php"); ?>
 <h2><?= $calendar["calendar_name"] ?> - New Event</h2>
 
 <div class="well">
+  <?= ServerErrorBlockFromGet() ?>
+
   <? if(isset($_GET['errors'])){ ?>
     <div id="error_explanation" class="alert alert-danger">
       <ul>

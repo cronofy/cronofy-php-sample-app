@@ -19,33 +19,47 @@ class CronofyException extends Exception
 
 class Cronofy
 {
-    const USERAGENT = 'Cronofy PHP 0.8';
-    const API_ROOT_URL = 'https://api.cronofy.com';
+    const USERAGENT = 'Cronofy PHP 0.12';
     const API_VERSION = 'v1';
+
+    public $api_root_url;
+    public $app_root_url;
+    public $host_domain;
 
     public $client_id;
     public $client_secret;
     public $access_token;
     public $refresh_token;
 
-    public function __construct($client_id = false, $client_secret = false, $access_token = false, $refresh_token = false)
+    public function __construct($config = array())
     {
         if (!function_exists('curl_init')) {
             throw new CronofyException("missing cURL extension", 1);
         }
 
-        if (!empty($client_id)) {
-            $this->client_id = $client_id;
+        if (!empty($config["client_id"])) {
+            $this->client_id = $config["client_id"];
         }
-        if (!empty($client_secret)) {
-            $this->client_secret = $client_secret;
+        if (!empty($config["client_secret"])) {
+            $this->client_secret = $config["client_secret"];
         }
-        if (!empty($access_token)) {
-            $this->access_token = $access_token;
+        if (!empty($config["access_token"])) {
+            $this->access_token = $config["access_token"];
         }
-        if (!empty($refresh_token)) {
-            $this->refresh_token = $refresh_token;
+        if (!empty($config["refresh_token"])) {
+            $this->refresh_token = $config["refresh_token"];
         }
+
+        $this->set_urls(isset($config["data_center"]) ? $config["data_center"] : false);
+    }
+
+    private function set_urls($data_center = false)
+    {
+        $data_center_addin = $data_center ? '-' . $data_center : '';
+
+        $this->api_root_url = "http://local$data_center_addin.cronofy.com";
+        $this->app_root_url = "http://local$data_center_addin.cronofy.com";
+        $this->host_domain = "local$data_center_addin.cronofy.com";
     }
 
     private function http_get($path, array $params = array())
@@ -138,7 +152,7 @@ class Cronofy
 
         $scope_list = join(" ", $params['scope']);
 
-        $url = "https://app.cronofy.com/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list;
+        $url = $this->app_root_url . "/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list;
         if (!empty($params['state'])) {
             $url.="&state=" . $params['state'];
         }
@@ -164,7 +178,7 @@ class Cronofy
         $scope_list = rawurlencode(join(" ", $params['scope']));
         $delegated_scope_list = rawurlencode(join(" ", $params['delegated_scope']));
 
-        $url = "https://app.cronofy.com/enterprise_connect/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list . "&delegated_scope=" . $delegated_scope_list;
+        $url = $this->app_root_url . "/enterprise_connect/oauth/authorize?response_type=code&client_id=" . $this->client_id . "&redirect_uri=" . urlencode($params['redirect_uri']) . "&scope=" . $scope_list . "&delegated_scope=" . $delegated_scope_list;
         if (!empty($params['state'])) {
             $url.="&state=" . rawurlencode($params['state']);
         }
@@ -280,6 +294,7 @@ class Cronofy
           Boolean only_managed : Indicates whether only events that you are managing for the account should be included in the results. OPTIONAL
           Array calendar_ids : Restricts the returned events to those within the set of specified calendar_ids. Defaults to returning events from all of a user's calendars. OPTIONAL
           Boolean localized_times : Indicates whether the events should have their start and end times returned with any available localization information. Defaults to returning start and end times as simple Time values. OPTIONAL
+          Boolean include_geo : Indicates whether the events should have their location's latitude and longitude returned where available. OPTIONAL
 
           returns $result - Array of events
          */
@@ -320,6 +335,10 @@ class Cronofy
           String location.long : The String describing the event's longitude. OPTIONAL
           Array reminders : An array of arrays detailing a length of time and a quantity. OPTIONAL
                             for example: array(array("minutes" => 30), array("minutes" => 1440))
+          String transparency : The transparency of the event. Accepted values are "transparent" and "opaque". OPTIONAL
+          Array attendees : An array of "invite" and "reject" arrays which are lists of attendees to invite and remove from the event. OPTIONAL
+                            for example: array("invite" => array(array("email" => "new_invitee@test.com", "display_name" => "New Invitee"))
+                                               "reject" => array(array("email" => "old_invitee@test.com", "display_name" => "Old Invitee")))
 
           returns true on success, associative array of errors on failure
          */
@@ -339,6 +358,12 @@ class Cronofy
         }
         if(!empty($params['reminders'])) {
             $postfields['reminders'] = $params['reminders'];
+        }
+        if(!empty($params['transparency'])) {
+            $postfields['transparency'] = $params['transparency'];
+        }
+        if(!empty($params['attendees'])) {
+            $postfields['attendees'] = $params['attendees'];
         }
 
         return $this->http_post("/" . self::API_VERSION . "/calendars/" . $params['calendar_id'] . "/events", $postfields);
@@ -432,6 +457,15 @@ class Cronofy
         return $this->http_post("/" . self::API_VERSION . "/calendars", $params);
     }
 
+    public function resources()
+    {
+      /*
+        returns $result - Array of resources. Details
+        are available in the Cronofy API Documentation
+       */
+      return $this->http_get('/' . self::API_VERSION . "/resources");
+    }
+
     public function change_participation_status($params)
     {
         /*
@@ -475,7 +509,7 @@ class Cronofy
 
     private function api_url($path)
     {
-        return self::API_ROOT_URL . $path;
+        return $this->api_root_url . $path;
     }
 
     private function url_params($params)
@@ -503,7 +537,7 @@ class Cronofy
         $headers = array();
 
         $headers[] = 'Authorization: Bearer ' . $this->access_token;
-        $headers[] = 'Host: api.cronofy.com';
+        $headers[] = 'Host: ' . $this->host_domain;
 
         if ($with_content_headers) {
             $headers[] = 'Content-Type: application/json; charset=utf-8';

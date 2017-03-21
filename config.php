@@ -22,33 +22,100 @@ if(isset($_SESSION[$refreshTokenKey])){
   }
 }
 
-$cronofy = new Cronofy($GLOBALS['CRONOFY_CLIENT_ID'], $GLOBALS['CRONOFY_CLIENT_SECRET'], $accessToken, $refreshToken);
+$cronofy = new Cronofy(array(
+  "client_id" => $GLOBALS['CRONOFY_CLIENT_ID'],
+  "client_secret" => $GLOBALS['CRONOFY_CLIENT_SECRET'],
+  "access_token" => $accessToken,
+  "refresh_token" => $refreshToken
+));
 
-set_exception_handler(function($e){
-  if(is_a($e, "CronofyException")){
-    if($e->getMessage() == "Unauthorized"){
-      if($GLOBALS['cronofy']->refresh_token()){
-        DebugLog("Cronofy access token has been refreshed");
+function CronofyRequest($call){
+  $result = array(
+    "data" => null,
+    "error" => null
+  );
 
-        $_SESSION[$GLOBALS['accessTokenKey']] = $GLOBALS['cronofy']->access_token;
-        $_SESSION[$GLOBALS['refreshTokenKey']] = $GLOBALS['cronofy']->refresh_token;
-
-        header('Refresh:0');
-        die;
-      } else {
-        DebugLog("Cronofy access has been revoked");
-
-        unset($_SESSION[$GLOBALS['accessTokenKey']]);
-        unset($_SESSION[$GLOBALS['refreshTokenKey']]);
-
-        header('Location: ' . $GLOBALS['DOMAIN'] . $loginPath);
-        die;
-      }
+  try{
+    $result["data"] = $call();
+  } catch(CronofyException $ex){
+    if($ex->getCode() == 401){
+      return RefreshToken($call);
     }
 
-    DebugLog("CronofyException: message=`" . $e->getMessage() . "` error_details=`" . print_r($e->error_details(), true) . "`");
-    throw $e;
-  } else {
-    throw $e;
+    DebugLog("CronofyException: message=`" . $ex->getMessage() . "` error_details=`" . print_r($ex->error_details(), true) . "`");
+    $result["error"] = $ex;
   }
-});
+
+  return $result;
+}
+
+function RefreshToken($call){
+  try {
+    $GLOBALS['cronofy']->refresh_token();
+
+    $result = array(
+      "data" => null,
+      "error" => null
+    );
+
+    DebugLog("Cronofy access token has been refreshed");
+
+    $_SESSION[$GLOBALS['accessTokenKey']] = $GLOBALS['cronofy']->access_token;
+    $_SESSION[$GLOBALS['refreshTokenKey']] = $GLOBALS['cronofy']->refresh_token;
+  }
+  catch(CronofyException $ex){
+    DebugLog("Cronofy access has been revoked");
+
+    unset($_SESSION[$GLOBALS['accessTokenKey']]);
+    unset($_SESSION[$GLOBALS['refreshTokenKey']]);
+
+    header('Location: ' . $GLOBALS['DOMAIN'] . $GLOBALS['loginPath']);
+    die;
+  }
+
+  try{
+    $result["data"] = $call();
+  } catch(CronofyException $ex){
+    DebugLog("CronofyException: message=`" . $e->getMessage() . "` error_details=`" . print_r($e->error_details(), true) . "`");
+    $result["error"] = $ex;
+  }
+
+  return $result;
+}
+
+function ServerErrorBlockFromResult($result){
+  if(!$result || !$result["error"]){
+    return;
+  }
+
+  $errorCode = $result["error"]->getCode();
+  $errorStatus = $result["error"]->getMessage();
+  $serverError = $result["error"]->error_details();
+
+  return ServerErrorBlock($errorCode, $errorStatus, $serverError);
+}
+
+function ServerErrorBlockFromGet(){
+  if(!isset($_GET['errorCode'])){
+    return;
+  }
+
+  $errorCode = $_GET['errorCode'];
+  $errorStatus = $_GET['errorStatus'];
+  $serverError = $_GET['serverError'];
+
+  return ServerErrorBlock($errorCode, $errorStatus, $serverError);
+}
+
+function ServerErrorBlock($errorCode, $errorStatus, $serverError){
+  return "
+<div id='error_explanation' class='alert alert-danger'>
+  <h4>$errorCode - $errorStatus</h4>
+  <pre>" . print_r($serverError, true) ."</pre>
+</div>
+  ";
+}
+
+function ErrorToQueryStringParams($error){
+  return 'errorCode=' . $error->getCode() . '&errorStatus=' . urlencode($error->getMessage()) . '&serverError=' . urlencode(print_r($error->error_details(), true));
+}

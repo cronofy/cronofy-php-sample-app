@@ -7,6 +7,8 @@ include("../header.php");
 <h2>Enterprise Connect - User Authorization</h2>
 
 <div class="well">
+  <?= ServerErrorBlockFromGet() ?>
+
   <? if(isset($_GET['errors'])){ ?>
     <div id="error_explanation" class="alert alert-danger">
       <ul>

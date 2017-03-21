@@ -1,6 +1,7 @@
 <?php
 include("../config.php");
 
+$result = null;
 $availablePeriods = [];
 
 $errors = [];
@@ -55,9 +56,11 @@ if(ISSET($_POST['availabilityInfo'])){
       array_push($params["participants"]["members"], array("sub" => $_POST['availabilityInfo']['accountId'][1]));
     }
 
-    $availabilityInfo = $cronofy->availability($params);
+    $result = CronofyRequest(function(){
+      return $GLOBALS['cronofy']->availability($GLOBALS['params']);
+    });
 
-    $availablePeriods = $availabilityInfo["available_periods"];
+    $availablePeriods = $result["data"]["available_periods"];
   }
 }
 
@@ -74,6 +77,8 @@ include("../header.php"); ?>
 <h2>Availability</h2>
 
 <div class="well">
+  <?= ServerErrorBlockFromResult($result); ?>
+
   <? if(count($errors) > 0){ ?>
     <div id="error_explanation" class="alert alert-danger">
       <ul>
