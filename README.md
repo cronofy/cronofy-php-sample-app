@@ -10,7 +10,7 @@ We would recommend downloading and using the Git Bash tool, which you can find [
 
 For help in cloning this repository please see [this](https://help.github.com/articles/cloning-a-repository/) article.
 
-### A local PHP environment
+### A local PHP environment version 7 or later
 
 #### Mac
 
