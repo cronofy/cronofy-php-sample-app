@@ -1,0 +1,5 @@
+{
+    "require": {
+        "cronofy/cronofy": "dev-master"
+    }
+}

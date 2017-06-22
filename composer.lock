@@ -1,0 +1,65 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "ad09800fd597bc0da90c64de4c1dba87",
+    "packages": [
+        {
+            "name": "cronofy/cronofy",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cronofy/cronofy-php.git",
+                "reference": "892decaa3f024e0b27f7d21490d106475630736f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cronofy/cronofy-php/zipball/892decaa3f024e0b27f7d21490d106475630736f",
+                "reference": "892decaa3f024e0b27f7d21490d106475630736f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "cronofy.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Harry Boyes",
+                    "email": "harry@cronofy.com"
+                }
+            ],
+            "description": "PHP wrapper for Cronofy's unified calendar API",
+            "keywords": [
+                "Authentication",
+                "authorization",
+                "calendar",
+                "client",
+                "cronofy",
+                "oauth",
+                "oauth2"
+            ],
+            "time": "2017-06-21 09:04:25"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "cronofy/cronofy": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
