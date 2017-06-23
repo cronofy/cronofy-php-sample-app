@@ -26,6 +26,17 @@ Download and install XAMPP, then move your cloned repository to `C:/xampp/htdocs
 
 ## Set-up
 
+### Install the dependencies
+
+Cronofy-php is installed via a composer package so you will have to install it
+
+```
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+```
+
+for more details see [Packagist's documentation](https://packagist.org/)
+
 ### Create a Cronofy application
 
 To use the Cronofy PHP Sample App you need to create a Cronofy application. To do this, [create a free developer account](https://app.cronofy.com/sign_up/developer), click "Create New App" in the left-hand navigation and create an application.
