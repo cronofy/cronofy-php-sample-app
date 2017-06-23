@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad09800fd597bc0da90c64de4c1dba87",
+    "content-hash": "d80b2478ffead700f91641a51267d3c9",
     "packages": [
         {
             "name": "cronofy/cronofy",
-            "version": "dev-master",
+            "version": "v0.13.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cronofy/cronofy-php.git",
-                "reference": "892decaa3f024e0b27f7d21490d106475630736f"
+                "reference": "95be336ed6d0224b672f6f72f1106172770aa050"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cronofy/cronofy-php/zipball/892decaa3f024e0b27f7d21490d106475630736f",
-                "reference": "892decaa3f024e0b27f7d21490d106475630736f",
+                "url": "https://api.github.com/repos/cronofy/cronofy-php/zipball/95be336ed6d0224b672f6f72f1106172770aa050",
+                "reference": "95be336ed6d0224b672f6f72f1106172770aa050",
                 "shasum": ""
             },
             "require": {
@@ -49,15 +49,13 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2017-06-21 09:04:25"
+            "time": "2017-06-23T08:37:45+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "cronofy/cronofy": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

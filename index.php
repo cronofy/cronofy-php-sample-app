@@ -19,6 +19,8 @@ include("header.php");
   <a href="/enterprise_connect/">Enterprise Connect</a>
   <br />
   <a href="/availability/">Availability API</a>
+  <br />
+  <a href="/real_time_scheduling/">Real Time Scheduling</a>
 <? } ?>
 
 <?php include("footer.php"); ?>

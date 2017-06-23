@@ -29,6 +29,12 @@ $cronofy = new Cronofy(array(
   "refresh_token" => $refreshToken
 ));
 
+if (isset($GLOBALS['LOCAL_CRONOFY_URLS'])){
+    $cronofy->api_root_url = 'http://local.cronofy.com';
+    $cronofy->app_root_url = 'http://local.cronofy.com';
+    $cronofy->host_domain = "local.cronofy.com";
+}
+
 function CronofyRequest($call){
   $result = array(
     "data" => null,

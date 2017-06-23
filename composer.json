@@ -1,5 +1,5 @@
 {
     "require": {
-        "cronofy/cronofy": "dev-master"
+        "cronofy/cronofy": "v0.13.5"
     }
 }
