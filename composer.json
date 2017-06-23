@@ -1,11 +1,5 @@
 {
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/cronofy/cronofy-php"
-        }
-    ],
     "require": {
-        "cronofy/cronofy": "dev-real-time-scheduling"
+        "cronofy/cronofy": "v0.13.5"
     }
 }
