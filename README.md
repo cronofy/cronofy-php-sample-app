@@ -24,6 +24,19 @@ For Windows we would recommend using [XAMPP](https://www.apachefriends.org/index
 
 Download and install XAMPP, then move your cloned repository to `C:/xampp/htdocs/cronofy-php`, open XAMPP and start your servers and then you can visit your site at [http://localhost:80/cronofy-php](http://localhost:80/cronofy-php)
 
+#### Linux
+
+For Linux we would recommend using [APACHE2](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-14-04).
+
+Commands to install APACHE2
+```
+(apt-get is used by ubuntu based linux)
+sudo apt-get update
+sudo apt-get install apache2
+```
+
+Then move your cloned repository to `/var/www/html/cronofy-php`, then you can visit your site at [http://localhost:80/cronofy-php](http://localhost:80/cronofy-php)
+
 ## Set-up
 
 ### Install the dependencies
