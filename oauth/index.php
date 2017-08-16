@@ -1,7 +1,7 @@
 <?php
 $GLOBALS['SKIP_AUTH'] = true;
 
-require '../config.php';
+include('../config.php');
 
 $redirect_uri = $GLOBALS['DOMAIN'] . '/oauth/';
 
